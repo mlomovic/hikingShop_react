@@ -1,11 +1,15 @@
 import React, { useContext } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import ProductsContext from '../contexts/ProductsContext';
+import CartContext from '../contexts/CartContext';
 
 const Single = () => {
 
     const params = useParams();
+    const navigate = useNavigate();
+
     const { products, setProducts } = useContext(ProductsContext);
+    const { cart, setCart } = useContext(CartContext);
 
     // Filtriranje jednog proizvoda za zeljenim ID-jem
     let product = products.filter(prod => {
@@ -26,12 +30,31 @@ const Single = () => {
     let catTemp = product[0].category.trim().split(',');
 
     catTemp.forEach((element, idx) => {
-        if (catTemp.length != idx + 1){
+        if (catTemp.length != idx + 1) {
             categElem.push(<a key={idx} href=".">{element.trim()}, </a>)
         } else {
             categElem.push(<a key={idx} href=".">{element.trim()}</a>)
         }
     });
+
+
+    const addToCart = (event) => {
+        event.preventDefault();
+
+        let newCartItem = {
+            id: params.id,
+            name: product[0].name,
+            price: product[0].price,
+            img: product[0].img,
+            desc: product[0].desc,
+            category: product[0].category,
+            qty: event.target.selectQty.value
+        };
+
+        setCart(cart => [...cart, newCartItem]);
+        navigate('/products')
+    }
+
 
     return (
         <section className="single container">
@@ -45,19 +68,19 @@ const Single = () => {
                     <h3>{product[0].name}</h3>
                     <div className="price">${product[0].price}</div>
                     <p>{product[0].desc}</p>
-                    <form>
+                    <form onSubmit={addToCart}>
                         <label>Quantity</label>
-                        <select>
+                        <select name='selectQty'>
                             {option}
                             {/* <option value="1">1</option>
                             <option value="2">2</option>
                             <option value="3">3</option> */}
                         </select>
-                        <button>Order now</button>
+                        <button type='submit'>Order now</button>
                     </form>
                     <hr />
                     <p>Category:
-                    {categElem}
+                        {categElem}
                         {/* <a href="">Men</a>,
                         <a href="">Boots</a> */}
                     </p>
