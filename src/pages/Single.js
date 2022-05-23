@@ -41,18 +41,38 @@ const Single = () => {
     const addToCart = (event) => {
         event.preventDefault();
 
-        let newCartItem = {
-            id: params.id,
-            name: product[0].name,
-            price: product[0].price,
-            img: product[0].img,
-            desc: product[0].desc,
-            category: product[0].category,
-            qty: event.target.selectQty.value
-        };
 
-        setCart(cart => [...cart, newCartItem]);
-        navigate('/products')
+        let tempIdx;
+
+        let tempProd = cart.filter((item, idx) => {
+            if (item.id == params.id) {
+                tempIdx = idx;
+                return item;
+            }
+        });
+
+        if (tempProd.length > 0) {
+            setCart(prev => {
+                prev[tempIdx].qty = Number(prev[tempIdx].qty) + Number(event.target.selectQty.value);
+                return [...prev];
+            });
+
+        } else {
+
+            let newCartItem = {
+                id: params.id,
+                name: product[0].name,
+                price: product[0].price,
+                img: product[0].img,
+                desc: product[0].desc,
+                category: product[0].category,
+                qty: event.target.selectQty.value
+            };
+
+            setCart(cart => [...cart, newCartItem]);
+        }
+
+        navigate('/products');
     }
 
 

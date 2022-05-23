@@ -105,30 +105,30 @@ const Admin = () => {
       price: price,
       desc: desc,
       category: category,
-      qty: qty 
+      qty: qty
     }
 
     fetch(`http://localhost:3000/edit/${editMode.id}`, {
       method: 'PUT',
-      headers:{
+      headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify(data)
     })
-    .then(productRaw => productRaw.json())
-    .then(productJson => {
-      console.log(productJson);
+      .then(productRaw => productRaw.json())
+      .then(productJson => {
+        console.log(productJson);
 
-      setEditMode({ mode: false, id: null });
+        setEditMode({ mode: false, id: null });
 
-      setName('');
-      setPrice(0);
-      setDesc('');
-      setCategory('');
-      setQty(0);
+        setName('');
+        setPrice(0);
+        setDesc('');
+        setCategory('');
+        setQty(0);
 
-    })
-    .catch(err => console.log(err));
+      })
+      .catch(err => console.log(err));
 
   }
 
@@ -144,6 +144,7 @@ const Admin = () => {
       {
         editMode.mode ?
           <>
+            <h3>Edit product</h3>
             <form onSubmit={editProduct}>
               <div className="mb-3">
                 <input type="text" className="form-control" value={name} onChange={(event) => setName(event.target.value)} placeholder='Name' />
@@ -165,27 +166,30 @@ const Admin = () => {
             <button className='btn btn-danger mt-3' onClick={() => cancelEditing()}>Cance</button>
           </>
           :
-          <form onSubmit={addProduct}>
-            <div className="mb-3">
-              <input type="text" className="form-control" value={name} onChange={(event) => setName(event.target.value)} placeholder='Name' />
-            </div>
-            <div className="mb-3">
-              <input type="text" className="form-control" value={price} onChange={(event) => setPrice(event.target.value)} placeholder='Price' />
-            </div>
-            <div className="mb-3">
-              <textarea className="form-control" name="desc" rows="3" id="frmDescription" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder='Dscription'></textarea>
-            </div>
-            <div className="mb-3">
-              <input type="text" className="form-control" value={category} onChange={(event) => setCategory(event.target.value)} placeholder='Category' />
-            </div>
-            <div className="mb-3">
-              <input type="text" className="form-control" value={qty} onChange={(event) => setQty(event.target.value)} placeholder='Qty' />
-            </div>
-            <div className="mb-3">
-              <input type="file" className="form-control" name='img' id='img' value={img} onChange={(event) => setImg(event.target.value)} placeholder='Image' />
-            </div>
-            <input type="submit" value="Add" className="btn btn-primary" id="addButton" />
-          </form>
+          <>
+            <h3>Add product</h3>
+            <form onSubmit={addProduct}>
+              <div className="mb-3">
+                <input type="text" className="form-control" value={name} onChange={(event) => setName(event.target.value)} placeholder='Name' />
+              </div>
+              <div className="mb-3">
+                <input type="text" className="form-control" value={price} onChange={(event) => setPrice(event.target.value)} placeholder='Price' />
+              </div>
+              <div className="mb-3">
+                <textarea className="form-control" name="desc" rows="3" id="frmDescription" value={desc} onChange={(event) => setDesc(event.target.value)} placeholder='Dscription'></textarea>
+              </div>
+              <div className="mb-3">
+                <input type="text" className="form-control" value={category} onChange={(event) => setCategory(event.target.value)} placeholder='Category' />
+              </div>
+              <div className="mb-3">
+                <input type="text" className="form-control" value={qty} onChange={(event) => setQty(event.target.value)} placeholder='Qty' />
+              </div>
+              <div className="mb-3">
+                <input type="file" className="form-control" name='img' id='img' value={img} onChange={(event) => setImg(event.target.value)} placeholder='Image' />
+              </div>
+              <input type="submit" value="Add" className="btn btn-primary" id="addButton" />
+            </form>
+          </>
       }
 
       <hr />
